@@ -4,7 +4,7 @@ Predicting late deliveries and segmenting shipment profiles for an e-commerce lo
 
 **Stack:** Python · scikit-learn · pandas · SHAP · LIME · matplotlib / seaborn
 
-
+---
 
 ## The business problem
 
@@ -48,7 +48,7 @@ Missing a late delivery costs **five times** more than a false alarm. All model 
 
 **Random Forest is the recommended model.** It matched the extensively tuned Decision Tree on cost (a 16-unit difference) while offering clearly superior discriminative ability (AUC 0.725 vs 0.667), which matters for threshold tuning and for ranking shipments by risk.
 
-![ROC curves](images/roc-curves.png)
+![ROC curves](roc-curves.png)
 
 ### Findings worth noting
 
@@ -62,13 +62,13 @@ Missing a late delivery costs **five times** more than a false alarm. All model 
 
 ### Explainability
 
-![Random Forest feature importance](images/rf-feature-importance.png)
+![Random Forest feature importance](rf-feature-importance.png)
 
 `Discount_offered` and `Weight_in_gms` dominate in both models, confirmed independently by EDA correlation analysis, feature importance, and SHAP values. The two models weight them differently: the Decision Tree leans heavily on `Discount_offered` (importance 0.48) as its root split, while Random Forest spreads importance more evenly with `Weight_in_gms` first (0.274), then `Discount_offered` (0.221) and `Cost_of_the_Product` (0.166) — a direct consequence of greedy splitting versus ensemble averaging.
 
 `Warehouse_block`, `Mode_of_Shipment`, and `Gender` carried negligible importance throughout.
 
-![SHAP summary](images/shap-random-forest.png)
+![SHAP summary](shap-random-forest.png)
 
 Local explanation was performed on a single misclassified instance (ID 4143), which the Decision Tree predicted as On Time with 75% confidence despite an actual late outcome. Both dominant features pointed toward on-time delivery — low discount, heavy package — illustrating a systematic blind spot where unobserved delay causes are invisible to the model.
 
@@ -78,11 +78,11 @@ Local explanation was performed on a single misclassified instance (ID 4143), wh
 
 Scope was narrowed to high-importance electronics, the segment where delivery failures carry the greatest reputational cost.
 
-![Elbow method](images/elbow-method.png)
+![Elbow method](elbow-method.png)
 
 K-Means and agglomerative hierarchical clustering were both applied; the elbow method identified **k = 3** as the most stable and interpretable configuration. Min-max scaling proved essential so that physical attributes (weight) and customer metrics (rating) carried equal mathematical weight.
 
-![Cluster profiles](images/cluster-profiles.png)
+![Cluster profiles](cluster-profiles.png)
 
 | Cluster | Profile | Operational implication |
 |---|---|---|
@@ -99,23 +99,21 @@ The practical conclusion is that a uniform shipping policy is leaving value on t
 ## Repository structure
 
 ```
-├── data/
-│   └── Ecommerce.csv
-├── notebooks/
-│   ├── 01-delivery-delay-classification.ipynb
-│   └── 02-shipment-segmentation-clustering.ipynb
-├── images/
-└── requirements.txt
+├── 01-delivery-delay-classification.ipynb
+├── 02-shipment-segmentation-clustering.ipynb
+├── Ecommerce.csv
+├── requirements.txt
+└── *.png                                    # figures used in this README
 ```
 
 ## Running it
 
 ```bash
 pip install -r requirements.txt
-jupyter notebook notebooks/
+jupyter notebook
 ```
 
-Notebooks run top to bottom; both read `data/Ecommerce.csv` relative to the repository root.
+Notebooks run top to bottom; both read `Ecommerce.csv` from the repository root.
 
 ---
 
