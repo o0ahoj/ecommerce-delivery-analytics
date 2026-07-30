@@ -121,4 +121,6 @@ Notebooks run top to bottom; both read `Ecommerce.csv` from the repository root.
 
 Coursework project completed by a team of four students at Prague University of Economics and Business (VŠE), 2026.
 
-**My contribution:** _[fill in — e.g. exploratory data analysis, Random Forest tuning and cost-sensitive evaluation, SHAP explainability, clustering interpretation]_
+**My contribution:** data cleaning and preprocessing pipeline, the supervised 
+learning workstream (Decision Tree and Random Forest modelling, hyperparameter 
+tuning, cost-sensitive evaluation), and SHAP-based model explainability.
